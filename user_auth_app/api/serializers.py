@@ -1,6 +1,8 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
+from rest_framework.authtoken.models import Token
 from user_auth_app.models import UserProfile
+
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
     type = serializers.ChoiceField(choices=UserProfile.TYPE_CHOICES)
@@ -19,6 +21,8 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         user.set_password(password)
         user.save()
         UserProfile.objects.create(user=user, type=type)
+        # Token erstellen
+        Token.objects.create(user=user)
         return user
 
 class CustomLoginSerializer(serializers.Serializer):
