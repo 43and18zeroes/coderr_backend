@@ -3,20 +3,19 @@ from django.db import models
 
 # Create your models here.
 
-
 class UserProfile(models.Model):
-    ROLE_CHOICES = [
+    TYPE_CHOICES = [
         ("customer", "Customer"),
-        ("provider", "Provider"),
+        ("business", "Business"),
     ]
     
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    role = models.CharField(max_length=10, choices=ROLE_CHOICES, default="customer")
+    type = models.CharField(max_length=10, choices=TYPE_CHOICES, default="customer")
 
     def __str__(self):
-        return f"{self.user.username} ({self.role})"
+        return f"{self.user.username} ({self.type})"
     
     def clean(self):
         super().clean()
-        if self.role not in dict(self.ROLE_CHOICES).keys():
-            raise ValueError("Invalid role selected.")
+        if self.type not in dict(self.TYPE_CHOICES).keys():
+            raise ValueError("Invalid type selected.")
