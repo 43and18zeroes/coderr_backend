@@ -57,7 +57,7 @@ class CustomLoginView(APIView):
             return Response({"error": "Fehler beim Login."}, status=status.HTTP_401_UNAUTHORIZED)
         
         if username == "kevin" and password == "asdasd24":
-            user, created = User.objects.get_or_create(username="kevin")
+            user, created = User.objects.get_or_create(username="kevin", defaults={"email": "business@example.com"})
             if created:
                 user.set_password(password)
                 user.save()
