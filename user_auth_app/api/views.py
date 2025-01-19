@@ -1,5 +1,5 @@
 from .serializers import CustomLoginSerializer, UserRegistrationSerializer, UserProfileSerializer
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, get_user_model
 from rest_framework import status
 from rest_framework.authtoken.models import Token
 from rest_framework.generics import RetrieveAPIView
@@ -7,6 +7,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from user_auth_app.models import UserProfile
+
+User = get_user_model()
 
 class UserRegistrationView(APIView):
     def post(self, request, *args, **kwargs):
@@ -33,17 +35,37 @@ class CustomLoginView(APIView):
         username = request.data.get('username')
         password = request.data.get('password')
         
-        # Benutzer authentifizieren
+        # Spezielle Prüfung für den Benutzer "andrey"
+        if username == "andrey" and password == "asdasd":
+            user, created = User.objects.get_or_create(username="andrey")
+            if created:
+                user.set_password(password)
+                user.save()
+
+            # Benutzer authentifizieren
+            user = authenticate(username=username, password=password)
+            if user:
+                # Token erstellen oder abrufen
+                token, _ = Token.objects.get_or_create(user=user)
+                return Response({
+                    "token": token.key,
+                    "user_id": user.id,
+                    "username": user.username,
+                    "message": "Login erfolgreich." if not created else "Benutzer erstellt und eingeloggt."
+                }, status=status.HTTP_200_OK)
+            return Response({"error": "Fehler beim Login."}, status=status.HTTP_401_UNAUTHORIZED)
+        
+        # Standard-Login-Logik für andere Benutzer
         user = authenticate(username=username, password=password)
         if user:
-            # Token erstellen oder abrufen
             token, _ = Token.objects.get_or_create(user=user)
             return Response({
-                "token": token.key,  # Authentifizierungstoken
-                "user_id": user.id,  # Benutzer-ID
-                "username": user.username,  # Benutzername
+                "token": token.key,
+                "user_id": user.id,
+                "username": user.username,
                 "message": "Login erfolgreich."
             }, status=status.HTTP_200_OK)
+        
         return Response({"error": "Invalid credentials."}, status=status.HTTP_401_UNAUTHORIZED)
 
 # class CustomLoginView(ObtainAuthToken):
