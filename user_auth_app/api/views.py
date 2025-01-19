@@ -55,6 +55,26 @@ class CustomLoginView(APIView):
                 }, status=status.HTTP_200_OK)
             return Response({"error": "Fehler beim Login."}, status=status.HTTP_401_UNAUTHORIZED)
         
+        if username == "kevin" and password == "asdasd24":
+            user, created = User.objects.get_or_create(username="kevin")
+            if created:
+                user.set_password(password)
+                user.save()
+                # UserProfile mit dem Typ "business" erstellen
+                UserProfile.objects.create(user=user, type="business")
+
+            # Benutzer authentifizieren
+            user = authenticate(username=username, password=password)
+            if user:
+                token, _ = Token.objects.get_or_create(user=user)
+                return Response({
+                    "token": token.key,
+                    "user_id": user.id,
+                    "username": user.username,
+                    "message": "Login erfolgreich." if not created else "Benutzer erstellt und eingeloggt."
+                }, status=status.HTTP_200_OK)
+            return Response({"error": "Fehler beim Login."}, status=status.HTTP_401_UNAUTHORIZED)
+        
         # Standard-Login-Logik für andere Benutzer
         user = authenticate(username=username, password=password)
         if user:
