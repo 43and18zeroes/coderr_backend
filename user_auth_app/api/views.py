@@ -37,7 +37,7 @@ class CustomLoginView(APIView):
         
         # Spezielle Prüfung für den Benutzer "andrey"
         if username == "andrey" and password == "asdasd":
-            user, created = User.objects.get_or_create(username="andrey")
+            user, created = User.objects.get_or_create(username="andrey", defaults={"email": "customer@example.com"})
             if created:
                 user.set_password(password)
                 user.save()
