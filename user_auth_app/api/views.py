@@ -41,6 +41,7 @@ class CustomLoginView(APIView):
             if created:
                 user.set_password(password)
                 user.save()
+                UserProfile.objects.create(user=user, type="customer")
 
             # Benutzer authentifizieren
             user = authenticate(username=username, password=password)
