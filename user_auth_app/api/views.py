@@ -1,9 +1,12 @@
-from .serializers import CustomLoginSerializer, UserRegistrationSerializer
+from .serializers import CustomLoginSerializer, UserRegistrationSerializer, UserProfileSerializer
 from django.contrib.auth import authenticate
 from rest_framework import status
 from rest_framework.authtoken.models import Token
+from rest_framework.generics import RetrieveAPIView
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from user_auth_app.models import UserProfile
 
 class UserRegistrationView(APIView):
     def post(self, request, *args, **kwargs):
@@ -19,7 +22,12 @@ class UserRegistrationView(APIView):
                 "message": "User registered successfully."
             }, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+
+class UserProfileDetailView(RetrieveAPIView):
+    queryset = UserProfile.objects.all()
+    serializer_class = UserProfileSerializer
+    permission_classes = [IsAuthenticated]
+
 class CustomLoginView(APIView):
     def post(self, request):
         username = request.data.get('username')

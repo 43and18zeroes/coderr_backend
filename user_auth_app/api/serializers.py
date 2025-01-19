@@ -3,6 +3,14 @@ from rest_framework import serializers
 from rest_framework.authtoken.models import Token
 from user_auth_app.models import UserProfile
 
+class UserProfileSerializer(serializers.ModelSerializer):
+    username = serializers.CharField(source='user.username')  # Zugriff auf das verbundene User-Objekt
+    email = serializers.EmailField(source='user.email')      # Zugriff auf die E-Mail des Users
+
+    class Meta:
+        model = UserProfile
+        fields = ['id', 'username', 'email', 'type']  # Felder, die zurückgegeben werden sollen
+
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
     type = serializers.ChoiceField(choices=UserProfile.TYPE_CHOICES)
