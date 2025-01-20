@@ -15,12 +15,11 @@ class UserRegistrationView(APIView):
         serializer = UserRegistrationSerializer(data=request.data)
         if serializer.is_valid():
             user = serializer.save()
-            # Erstelle einen Token für den Benutzer
             token, _ = Token.objects.get_or_create(user=user)
             return Response({
-                "token": token.key,  # Authentifizierungstoken
-                "user_id": user.id,  # Benutzer-ID
-                "username": user.username,  # Benutzername
+                "token": token.key,
+                "user_id": user.id,
+                "username": user.username,
                 "message": "User registered successfully."
             }, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -35,7 +34,6 @@ class CustomLoginView(APIView):
         username = request.data.get('username')
         password = request.data.get('password')
         
-        # Spezielle Prüfung für den Benutzer "andrey"
         if username == "andrey" and password == "asdasd":
             user, created = User.objects.get_or_create(username="andrey", defaults={"email": "customer@example.com"})
             if created:
@@ -43,10 +41,8 @@ class CustomLoginView(APIView):
                 user.save()
                 UserProfile.objects.create(user=user, type="customer")
 
-            # Benutzer authentifizieren
             user = authenticate(username=username, password=password)
             if user:
-                # Token erstellen oder abrufen
                 token, _ = Token.objects.get_or_create(user=user)
                 return Response({
                     "token": token.key,
@@ -61,10 +57,8 @@ class CustomLoginView(APIView):
             if created:
                 user.set_password(password)
                 user.save()
-                # UserProfile mit dem Typ "business" erstellen
                 UserProfile.objects.create(user=user, type="business")
 
-            # Benutzer authentifizieren
             user = authenticate(username=username, password=password)
             if user:
                 token, _ = Token.objects.get_or_create(user=user)
@@ -76,7 +70,6 @@ class CustomLoginView(APIView):
                 }, status=status.HTTP_200_OK)
             return Response({"error": "Fehler beim Login."}, status=status.HTTP_401_UNAUTHORIZED)
         
-        # Standard-Login-Logik für andere Benutzer
         user = authenticate(username=username, password=password)
         if user:
             token, _ = Token.objects.get_or_create(user=user)
