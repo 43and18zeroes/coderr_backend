@@ -46,9 +46,9 @@ class CustomLoginView(APIView):
                 token, _ = Token.objects.get_or_create(user=user)
                 return Response({
                     "token": token.key,
-                    "user_id": user.id,
                     "username": user.username,
-                    "message": "Login erfolgreich." if not created else "Benutzer erstellt und eingeloggt."
+                    "email": user.email,
+                    "user_id": user.id
                 }, status=status.HTTP_200_OK)
             return Response({"error": "Fehler beim Login."}, status=status.HTTP_401_UNAUTHORIZED)
         
@@ -64,9 +64,9 @@ class CustomLoginView(APIView):
                 token, _ = Token.objects.get_or_create(user=user)
                 return Response({
                     "token": token.key,
-                    "user_id": user.id,
                     "username": user.username,
-                    "message": "Login erfolgreich." if not created else "Benutzer erstellt und eingeloggt."
+                    "email": user.email,
+                    "user_id": user.id
                 }, status=status.HTTP_200_OK)
             return Response({"error": "Fehler beim Login."}, status=status.HTTP_401_UNAUTHORIZED)
         
