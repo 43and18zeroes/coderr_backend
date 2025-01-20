@@ -18,9 +18,9 @@ class UserRegistrationView(APIView):
             token, _ = Token.objects.get_or_create(user=user)
             return Response({
                 "token": token.key,
-                "user_id": user.id,
                 "username": user.username,
-                "message": "User registered successfully."
+                "email": user.email,
+                "user_id": user.id
             }, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
