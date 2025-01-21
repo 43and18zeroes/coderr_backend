@@ -47,28 +47,38 @@ class CustomLoginView(APIView):
         username = request.data.get('username')
         password = request.data.get('password')
 
-        if username in self.SPECIAL_USERS and password == self.SPECIAL_USERS[username]["password"]:
-            user_data = self.SPECIAL_USERS[username]
-            user, created = User.objects.get_or_create(
-                username=username, 
-                defaults={"email": user_data["email"]}
-            )
-            if created:
-                user.set_password(password)
-                user.save()
-                UserProfile.objects.create(user=user, type=user_data["type"])
+        if self.is_special_user(username, password):
+            self.handle_special_user(username, password)
 
         user = authenticate(username=username, password=password)
         if user:
-            token, _ = Token.objects.get_or_create(user=user)
-            return Response({
-                "token": token.key,
-                "username": user.username,
-                "email": user.email,
-                "user_id": user.id
-            }, status=status.HTTP_200_OK)
+            return self.generate_response(user)
 
         return Response({"error": "Invalid credentials."}, status=status.HTTP_401_UNAUTHORIZED)
+
+    def is_special_user(self, username, password):
+        return username in self.SPECIAL_USERS and password == self.SPECIAL_USERS[username]["password"]
+
+    def handle_special_user(self, username, password):
+        user_data = self.SPECIAL_USERS[username]
+        user, created = User.objects.get_or_create(
+            username=username,
+            defaults={"email": user_data["email"]}
+        )
+        if created:
+            user.set_password(password)
+            user.save()
+            UserProfile.objects.create(user=user, type=user_data["type"])
+
+    def generate_response(self, user):
+        token, _ = Token.objects.get_or_create(user=user)
+        return Response({
+            "token": token.key,
+            "username": user.username,
+            "email": user.email,
+            "user_id": user.id
+        }, status=status.HTTP_200_OK)
+
 
 # class CustomLoginView(ObtainAuthToken):
 # class CustomLoginView(APIView):
