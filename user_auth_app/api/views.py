@@ -30,46 +30,34 @@ class UserProfileDetailView(RetrieveAPIView):
     permission_classes = [IsAuthenticated]
 
 class CustomLoginView(APIView):
+    SPECIAL_USERS = {
+        "andrey": {
+            "password": "asdasd",
+            "email": "customer@example.com",
+            "type": "customer"
+        },
+        "kevin": {
+            "password": "asdasd24",
+            "email": "business@example.com",
+            "type": "business"
+        }
+    }
+
     def post(self, request):
         username = request.data.get('username')
         password = request.data.get('password')
-        
-        if username == "andrey" and password == "asdasd":
-            user, created = User.objects.get_or_create(username="andrey", defaults={"email": "customer@example.com"})
+
+        if username in self.SPECIAL_USERS and password == self.SPECIAL_USERS[username]["password"]:
+            user_data = self.SPECIAL_USERS[username]
+            user, created = User.objects.get_or_create(
+                username=username, 
+                defaults={"email": user_data["email"]}
+            )
             if created:
                 user.set_password(password)
                 user.save()
-                UserProfile.objects.create(user=user, type="customer")
+                UserProfile.objects.create(user=user, type=user_data["type"])
 
-            user = authenticate(username=username, password=password)
-            if user:
-                token, _ = Token.objects.get_or_create(user=user)
-                return Response({
-                    "token": token.key,
-                    "username": user.username,
-                    "email": user.email,
-                    "user_id": user.id
-                }, status=status.HTTP_200_OK)
-            return Response({"error": "Fehler beim Login."}, status=status.HTTP_401_UNAUTHORIZED)
-        
-        if username == "kevin" and password == "asdasd24":
-            user, created = User.objects.get_or_create(username="kevin", defaults={"email": "business@example.com"})
-            if created:
-                user.set_password(password)
-                user.save()
-                UserProfile.objects.create(user=user, type="business")
-
-            user = authenticate(username=username, password=password)
-            if user:
-                token, _ = Token.objects.get_or_create(user=user)
-                return Response({
-                    "token": token.key,
-                    "username": user.username,
-                    "email": user.email,
-                    "user_id": user.id
-                }, status=status.HTTP_200_OK)
-            return Response({"error": "Fehler beim Login."}, status=status.HTTP_401_UNAUTHORIZED)
-        
         user = authenticate(username=username, password=password)
         if user:
             token, _ = Token.objects.get_or_create(user=user)
@@ -79,7 +67,7 @@ class CustomLoginView(APIView):
                 "email": user.email,
                 "user_id": user.id
             }, status=status.HTTP_200_OK)
-        
+
         return Response({"error": "Invalid credentials."}, status=status.HTTP_401_UNAUTHORIZED)
 
 # class CustomLoginView(ObtainAuthToken):
