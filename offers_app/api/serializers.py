@@ -1,7 +1,7 @@
-from offers_app.models import Offer
 from rest_framework import serializers
+from offers_app.models import Offer
 
 class OfferSerializer(serializers.ModelSerializer):
     class Meta:
         model = Offer
-        fields = ['id', 'title']
+        fields = '__all__'
