@@ -1,6 +1,6 @@
-from rest_framework.generics import ListAPIView
-from reviews_app.models import Review
 from .serializers import ReviewSerializer
+from reviews_app.models import Review
+from rest_framework.generics import ListAPIView
 
 class ReviewListView(ListAPIView):
     queryset = Review.objects.all()
