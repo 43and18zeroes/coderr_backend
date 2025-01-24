@@ -1,7 +1,7 @@
-from .serializers import OfferSerializer
-from orders_app.models import Offer
+from .serializers import OrderSerializer
+from orders_app.models import Order
 from rest_framework.generics import ListAPIView
 
-class OfferListView(ListAPIView):
-    queryset = Offer.objects.all()
-    serializer_class = OfferSerializer
+class OrderListView(ListAPIView):
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer

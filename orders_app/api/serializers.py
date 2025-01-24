@@ -1,9 +1,9 @@
-from orders_app.models import Offer
+from orders_app.models import Order
 from rest_framework import serializers
 
-class OfferSerializer(serializers.ModelSerializer):
+class OrderSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Offer
+        model = Order
         fields = [
             'id',
             'customer_user',
@@ -13,7 +13,7 @@ class OfferSerializer(serializers.ModelSerializer):
             'delivery_time_in_days',
             'price',
             'features',
-            'offer_type',
+            'order_type',
             'status',
             'created_at',
             'updated_at',
