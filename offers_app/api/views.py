@@ -1,8 +1,8 @@
-from rest_framework.generics import ListCreateAPIView
-from offers_app.models import Offer
 from .serializers import OfferSerializer
-from rest_framework.filters import OrderingFilter, SearchFilter
 from django_filters.rest_framework import DjangoFilterBackend
+from offers_app.models import Offer
+from rest_framework.filters import OrderingFilter, SearchFilter
+from rest_framework.generics import ListCreateAPIView
 
 
 class OfferListCreateAPIView(ListCreateAPIView):

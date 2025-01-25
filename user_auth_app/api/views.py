@@ -1,8 +1,8 @@
-from .serializers import CustomLoginSerializer, UserRegistrationSerializer, UserProfileSerializer
+from .serializers import CustomLoginSerializer, UserRegistrationSerializer, UserProfileSerializer, BusinessProfileSerializer
 from django.contrib.auth import authenticate, get_user_model
 from rest_framework import status
 from rest_framework.authtoken.models import Token
-from rest_framework.generics import RetrieveAPIView
+from rest_framework.generics import RetrieveAPIView, ListAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -78,6 +78,12 @@ class CustomLoginView(APIView):
             "email": user.email,
             "user_id": user.id
         }, status=status.HTTP_200_OK)
+        
+class BusinessProfileListView(ListAPIView):
+    serializer_class = BusinessProfileSerializer
+
+    def get_queryset(self):
+        return UserProfile.objects.filter(type="business")
 
 
 # class CustomLoginView(ObtainAuthToken):

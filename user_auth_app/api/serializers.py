@@ -93,3 +93,18 @@ class CustomLoginSerializer(serializers.Serializer):
 
         # data['user'] = user
         return data
+
+class BusinessProfileSerializer(serializers.ModelSerializer):
+    user = serializers.SerializerMethodField()
+
+    class Meta:
+        model = UserProfile
+        fields = ['user', 'file', 'location', 'tel', 'description', 'working_hours', 'type']
+
+    def get_user(self, obj):
+        return {
+            "pk": obj.user.id,
+            "username": obj.user.username,
+            "first_name": obj.user.first_name,
+            "last_name": obj.user.last_name,
+        }
