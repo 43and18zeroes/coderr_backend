@@ -41,11 +41,9 @@ class OfferSerializer(serializers.ModelSerializer):
         ]
         
     def get_creator_id(self, obj):
-        # Gibt die ID des Benutzers zurück
         return obj.user.id if obj.user else None
 
     def get_user_details(self, obj):
-        # Benutzerdetails (z.B. für Name und Username)
         if obj.user:
             return {
                 "first_name": obj.user.first_name,
@@ -55,5 +53,4 @@ class OfferSerializer(serializers.ModelSerializer):
         return None
 
     def get_details(self, obj):
-        # Details des Angebots (URLs)
         return [{"id": detail.id, "url": f"/offerdetails/{detail.id}/"} for detail in obj.details.all()]
