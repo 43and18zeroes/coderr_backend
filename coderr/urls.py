@@ -19,7 +19,7 @@ from django.urls import path, include
 from offers_app.api.views import OfferListCreateAPIView
 from orders_app.api.views import OrderListView
 from reviews_app.api.views import ReviewListView
-from user_auth_app.api.views import CustomLoginView, UserRegistrationView, UserProfileDetailView, BusinessProfileListView
+from user_auth_app.api.views import CustomLoginView, UserRegistrationView, UserProfileDetailView, ProfileByTypeListView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -30,5 +30,5 @@ urlpatterns = [
     path('api/profile/<int:pk>/', UserProfileDetailView.as_view(), name='user-profile-detail'),
     path('api/registration/', UserRegistrationView.as_view(), name='user-registration'),
     path('api/reviews/', ReviewListView.as_view(), name='review-list'),
-    path('api/profiles/business/', BusinessProfileListView.as_view(), name='business-profiles'),
+    path('api/profiles/<str:type>/', ProfileByTypeListView.as_view(), name='business-profiles'),
 ]

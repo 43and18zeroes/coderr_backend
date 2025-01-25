@@ -94,7 +94,7 @@ class CustomLoginSerializer(serializers.Serializer):
         # data['user'] = user
         return data
 
-class BusinessProfileSerializer(serializers.ModelSerializer):
+class ProfileByTypeSerializer(serializers.ModelSerializer):
     user = serializers.SerializerMethodField()
 
     class Meta:
