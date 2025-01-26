@@ -1,5 +1,5 @@
-from orders_app.models import Order
 from rest_framework import serializers
+from orders_app.models import Order
 
 class OrderSerializer(serializers.ModelSerializer):
     class Meta:
@@ -18,3 +18,13 @@ class OrderSerializer(serializers.ModelSerializer):
             'created_at',
             'updated_at',
         ]
+
+    def validate_price(self, value):
+        if value <= 0:
+            raise serializers.ValidationError("Price must be greater than zero.")
+        return value
+
+    def validate_revisions(self, value):
+        if value < 0:
+            raise serializers.ValidationError("Revisions cannot be negative.")
+        return value

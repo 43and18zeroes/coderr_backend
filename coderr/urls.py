@@ -17,7 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from offers_app.api.views import OfferListCreateAPIView, OfferDetailRetrieveAPIView
-from orders_app.api.views import OrderListView
+from orders_app.api.views import OrderListCreateView
 from reviews_app.api.views import ReviewListView
 from user_auth_app.api.views import CustomLoginView, UserRegistrationView, UserProfileDetailView, ProfileByTypeListView
 
@@ -27,7 +27,7 @@ urlpatterns = [
     path('api/login/', CustomLoginView.as_view(), name='login'),
     path('api/offers/', OfferListCreateAPIView.as_view(), name='offer-list-create'),
     path('offerdetails/<int:pk>/', OfferDetailRetrieveAPIView.as_view(), name='offer-detail'),
-    path('api/orders/', OrderListView.as_view(), name='order-list'),
+    path('api/orders/', OrderListCreateView.as_view(), name='order-list'),
     path('api/profile/<int:pk>/', UserProfileDetailView.as_view(), name='user-profile-detail'),
     path('api/registration/', UserRegistrationView.as_view(), name='user-registration'),
     path('api/reviews/', ReviewListView.as_view(), name='review-list'),
