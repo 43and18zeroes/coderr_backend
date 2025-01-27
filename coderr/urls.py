@@ -26,7 +26,7 @@ urlpatterns = [
     # path('api/', include('user_auth_app.api.urls')),
     path('api/login/', CustomLoginView.as_view(), name='login'),
     path('api/offers/', OfferListCreateAPIView.as_view(), name='offer-list-create'),
-    path('offerdetails/<int:pk>/', OfferDetailRetrieveAPIView.as_view(), name='offer-detail'),
+    path('api/offerdetails/<int:pk>/', OfferDetailRetrieveAPIView.as_view(), name='offer-detail'),
     path('api/orders/', OrderListCreateView.as_view(), name='order-list'),
     path('api/profile/<int:pk>/', UserProfileDetailView.as_view(), name='user-profile-detail'),
     path('api/registration/', UserRegistrationView.as_view(), name='user-registration'),
