@@ -27,7 +27,6 @@ class OfferListCreateAPIView(ListCreateAPIView):
     search_fields = ['title', 'description']
     pagination_class = OfferPagination
 
-
-class OfferDetailRetrieveAPIView(RetrieveAPIView):
-    queryset = OfferDetail.objects.all()
-    serializer_class = OfferDetailSerializer
+class OfferDetailAPIView(RetrieveAPIView):
+    queryset = Offer.objects.all()
+    serializer_class = OfferSerializer
