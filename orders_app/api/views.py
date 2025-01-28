@@ -20,3 +20,18 @@ class OrderCountView(APIView):
         
         order_count = Order.objects.filter(business_user_id=business_user_id, status='in_progress').count()
         return Response({"order_count": order_count})
+    
+class CompletedOrderCountView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, business_user_id, *args, **kwargs):
+        # Überprüfen, ob der Business-User existiert
+        if not User.objects.filter(id=business_user_id).exists():
+            return Response({"error": "Business user not found."}, status=404)
+
+        # Bestellungen mit Status "completed" zählen
+        completed_order_count = Order.objects.filter(
+            business_user_id=business_user_id,
+            status='completed'
+        ).count()
+        return Response({"completed_order_count": completed_order_count})
