@@ -15,17 +15,27 @@ class OfferFilter(FilterSet):
 
     class Meta:
         model = Offer
-        fields = ['creator_id', 'user', 'min_delivery_time', 'max_delivery_time']
+        fields = ['creator_id', 'user']
 
+
+# class OfferListCreateAPIView(ListCreateAPIView):
+#     queryset = Offer.objects.all()
+#     serializer_class = OfferSerializer
+#     filter_backends = [DjangoFilterBackend, OrderingFilter, SearchFilter]
+#     filterset_class = OfferFilter
+#     ordering_fields = ['created_at', 'title']
+#     search_fields = ['title', 'description']
+#     pagination_class = OfferPagination
+
+class OfferDetailAPIView(RetrieveAPIView):
+    queryset = Offer.objects.all()
+    serializer_class = OfferSerializer
 
 class OfferListCreateAPIView(ListCreateAPIView):
     queryset = Offer.objects.all()
     serializer_class = OfferSerializer
-    filter_backends = [DjangoFilterBackend, OrderingFilter, SearchFilter]
-    filterset_class = OfferFilter
-    ordering_fields = ['created_at', 'title']
-    search_fields = ['title', 'description']
     pagination_class = OfferPagination
+
 
 class OfferDetailAPIView(RetrieveAPIView):
     queryset = Offer.objects.all()

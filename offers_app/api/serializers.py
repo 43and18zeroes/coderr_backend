@@ -18,39 +18,23 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ['id', 'first_name', 'last_name', 'username']
 
+class OfferDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = OfferDetail
+        fields = ['id', 'title', 'revisions', 'delivery_time_in_days', 'price', 'features', 'offer_type']
+        
 class OfferSerializer(serializers.ModelSerializer):
-    creator_id = serializers.SerializerMethodField()
-    user_details = UserSerializer(source='user', read_only=True)
-    details = OfferDetailSerializer(many=True, read_only=True)
+    details = OfferDetailSerializer(many=True)
 
     class Meta:
         model = Offer
-        fields = [
-            'id',
-            'creator_id',
-            'user',
-            'title',
-            'description',
-            'created_at',
-            'updated_at',
-            'details',
-            'min_price',
-            'min_delivery_time',
-            'max_delivery_time',
-            'user_details',
-        ]
+        fields = ['id', 'title', 'description', 'details']
+
+    def create(self, validated_data):
+        details_data = validated_data.pop('details')
+        offer = Offer.objects.create(**validated_data)
         
-    def get_creator_id(self, obj):
-        return obj.user.id if obj.user else None
-
-    def get_user_details(self, obj):
-        if obj.user:
-            return {
-                "first_name": obj.user.first_name,
-                "last_name": obj.user.last_name,
-                "username": obj.user.username,
-            }
-        return None
-
-    def get_details(self, obj):
-        return [{"id": detail.id, "url": f"/offerdetails/{detail.id}/"} for detail in obj.details.all()]
+        for detail_data in details_data:
+            OfferDetail.objects.create(offer=offer, **detail_data)
+        
+        return offer
