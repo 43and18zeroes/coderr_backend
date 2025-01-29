@@ -10,6 +10,7 @@ class Offer(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     min_price = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
+    min_delivery_time = models.PositiveIntegerField(default=7)  # Neu: Mindestlieferzeit
     
     def update_min_price(self, save_instance=True):
         min_price = self.details.aggregate(Min('price'))['price__min']
@@ -20,9 +21,19 @@ class Offer(models.Model):
             if save_instance:
                 super().save(update_fields=['min_price'])
 
+    def update_min_delivery_time(self, save_instance=True):
+        min_delivery_time = self.details.aggregate(Min('delivery_time_in_days'))['delivery_time_in_days__min']
+        new_min_delivery_time = min_delivery_time if min_delivery_time is not None else 7  # Default: 7 Tage
+        
+        if self.min_delivery_time != new_min_delivery_time:
+            self.min_delivery_time = new_min_delivery_time
+            if save_instance:
+                super().save(update_fields=['min_delivery_time'])
+
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
         self.update_min_price(save_instance=False)
+        self.update_min_delivery_time(save_instance=False)
 
     def __str__(self):
         return self.title
@@ -44,11 +55,12 @@ class OfferDetail(models.Model):
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
         self.offer.update_min_price()
+        self.offer.update_min_delivery_time()
 
     def delete(self, *args, **kwargs):
         super().delete(*args, **kwargs)
         self.offer.update_min_price()
+        self.offer.update_min_delivery_time()
 
     def __str__(self):
         return f"{self.title} - {self.offer.title}"
-    
