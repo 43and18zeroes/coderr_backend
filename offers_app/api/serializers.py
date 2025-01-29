@@ -19,23 +19,34 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ['id', 'first_name', 'last_name', 'username']
 
 class OfferDetailSerializer(serializers.ModelSerializer):
-    price = serializers.FloatField()
+    price = serializers.FloatField()  # Stellt sicher, dass `price` als Float zurückgegeben wird
+
     class Meta:
         model = OfferDetail
         fields = ['id', 'title', 'revisions', 'delivery_time_in_days', 'price', 'features', 'offer_type']
-        
+
 class OfferSerializer(serializers.ModelSerializer):
     details = OfferDetailSerializer(many=True)
+    min_price = serializers.FloatField(read_only=True)  # `read_only` verhindert Fehler beim Posten
 
     class Meta:
         model = Offer
-        fields = ['id', 'title', 'description', 'details']
+        fields = ['id', 'title', 'description', 'details', 'min_price']
 
     def create(self, validated_data):
-        details_data = validated_data.pop('details')
-        offer = Offer.objects.create(**validated_data)
-        
+        """Erstellt ein `Offer`-Objekt und seine `OfferDetail`-Einträge"""
+        details_data = validated_data.pop('details', [])  # Falls `details` fehlt, wird eine leere Liste verwendet
+        offer = Offer.objects.create(**validated_data)  # Erstellt das `Offer`-Objekt
+
+        # Erstelle `OfferDetail`-Einträge
+        min_price = None
         for detail_data in details_data:
-            OfferDetail.objects.create(offer=offer, **detail_data)
-        
-        return offer
+            detail = OfferDetail.objects.create(offer=offer, **detail_data)
+            if min_price is None or detail.price < min_price:
+                min_price = detail.price
+
+        # Setze den `min_price`-Wert
+        offer.min_price = min_price if min_price is not None else 0.0
+        offer.save(update_fields=['min_price'])  # Speichert nur `min_price`
+
+        return offer  
