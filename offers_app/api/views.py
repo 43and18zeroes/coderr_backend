@@ -32,8 +32,12 @@ class OfferDetailAPIView(RetrieveAPIView):
     serializer_class = OfferSerializer
 
 class OfferListCreateAPIView(ListCreateAPIView):
-    queryset = Offer.objects.all()
+    queryset = Offer.objects.all().order_by('-created_at')  # Neu: Sortierung nach Erstellungsdatum
     serializer_class = OfferSerializer
+    filter_backends = [DjangoFilterBackend, OrderingFilter, SearchFilter]
+    filterset_class = OfferFilter
+    ordering_fields = ['created_at', 'title']
+    search_fields = ['title', 'description']
     pagination_class = OfferPagination
 
 

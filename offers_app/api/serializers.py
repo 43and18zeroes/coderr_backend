@@ -31,10 +31,9 @@ class OfferSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Offer
-        fields = ['id', 'title', 'description', 'details', 'min_price']
+        fields = ['id', 'title', 'description', 'created_at', 'details', 'min_price']
 
     def create(self, validated_data):
-        """Erstellt ein `Offer`-Objekt und seine `OfferDetail`-Einträge"""
         details_data = validated_data.pop('details', [])
         offer = Offer.objects.create(**validated_data)
 
