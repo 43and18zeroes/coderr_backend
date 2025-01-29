@@ -3,15 +3,15 @@ from offers_app.models import Offer, OfferDetail
 from rest_framework import serializers
 
 
-class OfferDetailSerializer(serializers.ModelSerializer):
-    url = serializers.SerializerMethodField()
+# class OfferDetailSerializer(serializers.ModelSerializer):
+#     url = serializers.SerializerMethodField()
 
-    class Meta:
-        model = OfferDetail
-        fields = ['id', 'url']
+#     class Meta:
+#         model = OfferDetail
+#         fields = ['id', 'url']
 
-    def get_url(self, obj):
-        return f"/offerdetails/{obj.id}/"
+#     def get_url(self, obj):
+#         return f"/offerdetails/{obj.id}/"
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -19,6 +19,7 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ['id', 'first_name', 'last_name', 'username']
 
 class OfferDetailSerializer(serializers.ModelSerializer):
+    price = serializers.FloatField()
     class Meta:
         model = OfferDetail
         fields = ['id', 'title', 'revisions', 'delivery_time_in_days', 'price', 'features', 'offer_type']
