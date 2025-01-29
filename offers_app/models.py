@@ -12,19 +12,17 @@ class Offer(models.Model):
     min_price = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
     
     def update_min_price(self, save_instance=True):
-        """Aktualisiert `min_price`, speichert aber nur, wenn es nötig ist."""
         min_price = self.details.aggregate(Min('price'))['price__min']
         new_min_price = min_price if min_price is not None else 0.0
         
-        if self.min_price != new_min_price:  # Nur speichern, wenn sich der Wert ändert
+        if self.min_price != new_min_price:
             self.min_price = new_min_price
             if save_instance:
-                super().save(update_fields=['min_price'])  # Speichert nur `min_price`
+                super().save(update_fields=['min_price'])
 
     def save(self, *args, **kwargs):
-        """Standard-Save ohne `update_min_price`, um Rekursion zu vermeiden."""
-        super().save(*args, **kwargs)  # Speichert das Offer
-        self.update_min_price(save_instance=False)  # Berechnet `min_price`, aber speichert es nicht sofort
+        super().save(*args, **kwargs)
+        self.update_min_price(save_instance=False)
 
     def __str__(self):
         return self.title
@@ -36,7 +34,7 @@ class OfferDetail(models.Model):
     revisions = models.PositiveIntegerField(default=-1)
     delivery_time_in_days = models.PositiveIntegerField(default=7)
     price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    features = models.JSONField(default='default-feature')  # Speichert Features als JSON-Array
+    features = models.JSONField(default='default-feature')
     offer_type = models.CharField(max_length=50, choices=[
         ('basic', 'Basic'),
         ('standard', 'Standard'),
@@ -44,12 +42,10 @@ class OfferDetail(models.Model):
     ], default='basic')
     
     def save(self, *args, **kwargs):
-        """Speichert `OfferDetail` und aktualisiert `min_price` des zugehörigen `Offer`, aber ohne Rekursion."""
         super().save(*args, **kwargs)
         self.offer.update_min_price()
 
     def delete(self, *args, **kwargs):
-        """Löscht `OfferDetail` und aktualisiert `min_price` des zugehörigen `Offer`."""
         super().delete(*args, **kwargs)
         self.offer.update_min_price()
 
