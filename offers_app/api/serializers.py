@@ -31,7 +31,7 @@ class OfferSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Offer
-        fields = ['id', 'title', 'description', 'created_at', 'details', 'min_price']
+        fields = ['id', 'title', 'description', 'created_at', 'updated_at', 'details', 'min_price']
 
     def create(self, validated_data):
         details_data = validated_data.pop('details', [])
