@@ -27,7 +27,7 @@ class OfferFilter(FilterSet):
 #     search_fields = ['title', 'description']
 #     pagination_class = OfferPagination
 
-class OfferDetailAPIView(RetrieveAPIView):
+class OfferSingleAPIView(RetrieveAPIView):
     queryset = Offer.objects.all()
     serializer_class = OfferSerializer
 
@@ -39,8 +39,3 @@ class OfferListCreateAPIView(ListCreateAPIView):
     ordering_fields = ['created_at', 'title']
     search_fields = ['title', 'description']
     pagination_class = OfferPagination
-
-
-class OfferDetailAPIView(RetrieveAPIView):
-    queryset = Offer.objects.all()
-    serializer_class = OfferSerializer
