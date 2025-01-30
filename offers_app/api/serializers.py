@@ -37,8 +37,15 @@ class OfferSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         details_data = validated_data.pop('details', [])
-        offer = Offer.objects.create(**validated_data)
+        request = self.context.get('request', None)
+        
+        if request and request.user.is_authenticated:
+            validated_data['user'] = request.user  # User aus request setzen
+        else:
+            raise serializers.ValidationError({"user": "User authentication required."})
 
+        offer = Offer.objects.create(**validated_data)
+        
         min_price = None
         min_delivery_time = None
 
