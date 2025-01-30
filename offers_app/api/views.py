@@ -39,3 +39,7 @@ class OfferListCreateAPIView(ListCreateAPIView):
     ordering_fields = ['created_at', 'title']
     search_fields = ['title', 'description']
     pagination_class = OfferPagination
+    
+class OfferDetailView(RetrieveAPIView):
+    queryset = OfferDetail.objects.all()
+    serializer_class = OfferDetailSerializer

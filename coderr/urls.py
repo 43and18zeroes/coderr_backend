@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from offers_app.api.views import OfferListCreateAPIView, OfferSingleAPIView
+from offers_app.api.views import OfferListCreateAPIView, OfferSingleAPIView, OfferDetailView
 from orders_app.api.views import OrderListCreateView, OrderCountView, CompletedOrderCountView
 from reviews_app.api.views import ReviewListView
 from user_auth_app.api.views import CustomLoginView, UserRegistrationView, UserProfileDetailView, ProfileByTypeListView
@@ -26,7 +26,8 @@ urlpatterns = [
     # path('api/', include('user_auth_app.api.urls')),
     path('api/login/', CustomLoginView.as_view(), name='login'),
     path('api/offers/', OfferListCreateAPIView.as_view(), name='offer-list-create'),
-    path('api/offers/<int:pk>/', OfferSingleAPIView.as_view(), name='offer-detail'),
+    path('api/offers/<int:pk>/', OfferSingleAPIView.as_view(), name='offer-single'),
+    path('api/offerdetails/<int:pk>/', OfferDetailView.as_view(), name='offer-detail'),
     path('api/orders/', OrderListCreateView.as_view(), name='order-list'),
     path('api/order-count/<int:business_user_id>/', OrderCountView.as_view(), name='order-count'),
     path('api/completed-order-count/<int:business_user_id>/', CompletedOrderCountView.as_view(), name='completed-order-count'),
