@@ -28,7 +28,7 @@ class OfferDetailSerializer(serializers.ModelSerializer):
 class OfferSerializer(serializers.ModelSerializer):
     details = OfferDetailSerializer(many=True)
     min_price = serializers.FloatField(read_only=True)
-    min_delivery_time = serializers.IntegerField(read_only=True)  # Neu: min_delivery_time als readonly
+    min_delivery_time = serializers.IntegerField(read_only=True)
 
     class Meta:
         model = Offer

@@ -7,7 +7,7 @@ from rest_framework.generics import ListCreateAPIView, RetrieveAPIView
 
 
 class OfferPagination(PageNumberPagination):
-    page_size = 10  # Anzahl der Objekte pro Seite
+    page_size = 10
 
 
 class OfferFilter(FilterSet):
@@ -18,21 +18,12 @@ class OfferFilter(FilterSet):
         fields = ['creator_id', 'user']
 
 
-# class OfferListCreateAPIView(ListCreateAPIView):
-#     queryset = Offer.objects.all()
-#     serializer_class = OfferSerializer
-#     filter_backends = [DjangoFilterBackend, OrderingFilter, SearchFilter]
-#     filterset_class = OfferFilter
-#     ordering_fields = ['created_at', 'title']
-#     search_fields = ['title', 'description']
-#     pagination_class = OfferPagination
-
 class OfferSingleAPIView(RetrieveAPIView):
     queryset = Offer.objects.all()
     serializer_class = OfferSerializer
 
 class OfferListCreateAPIView(ListCreateAPIView):
-    queryset = Offer.objects.all().order_by('-created_at')  # Neu: Sortierung nach Erstellungsdatum
+    queryset = Offer.objects.all().order_by('-created_at')
     serializer_class = OfferSerializer
     filter_backends = [DjangoFilterBackend, OrderingFilter, SearchFilter]
     filterset_class = OfferFilter
