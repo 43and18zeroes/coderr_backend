@@ -3,7 +3,7 @@ from .serializers import OfferSerializer, OfferDetailSerializer, OfferCreateSeri
 from django_filters.rest_framework import DjangoFilterBackend, FilterSet, CharFilter
 from offers_app.models import Offer, OfferDetail
 from rest_framework.filters import OrderingFilter, SearchFilter
-from rest_framework.generics import ListCreateAPIView, RetrieveAPIView
+from rest_framework.generics import ListCreateAPIView, RetrieveAPIView, RetrieveUpdateAPIView
 
 
 class OfferPagination(PageNumberPagination):
@@ -18,7 +18,7 @@ class OfferFilter(FilterSet):
         fields = ['creator_id', 'user']
 
 
-class OfferSingleAPIView(RetrieveAPIView):
+class OfferSingleAPIView(RetrieveUpdateAPIView):
     queryset = Offer.objects.all()
     serializer_class = OfferSingleSerializer
 
