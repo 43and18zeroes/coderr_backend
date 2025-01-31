@@ -21,7 +21,7 @@ class Order(models.Model):
     delivery_time_in_days = models.IntegerField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
     features = models.JSONField()
-    order_type = models.CharField(max_length=20, choices=ORDER_TYPES)
+    offer_type = models.CharField(max_length=20, choices=ORDER_TYPES)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

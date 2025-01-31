@@ -13,7 +13,7 @@ class OrderSerializer(serializers.ModelSerializer):
             'delivery_time_in_days',
             'price',
             'features',
-            'order_type',
+            'offer_type',
             'status',
             'created_at',
             'updated_at',
