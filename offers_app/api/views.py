@@ -24,7 +24,6 @@ class OfferSingleAPIView(RetrieveUpdateAPIView):
 
 class OfferListCreateAPIView(ListCreateAPIView):
     queryset = Offer.objects.all().order_by('-created_at')
-    # serializer_class = OfferSerializer
     filter_backends = [DjangoFilterBackend, OrderingFilter, SearchFilter]
     filterset_class = OfferFilter
     ordering_fields = ['created_at', 'title']
@@ -33,8 +32,8 @@ class OfferListCreateAPIView(ListCreateAPIView):
     
     def get_serializer_class(self):
         if self.request.method == 'POST':
-            return OfferCreateSerializer  # 👈 Verwende den neuen Serializer für POST
-        return OfferSerializer  # 👈 Standard-Serializer für GET
+            return OfferCreateSerializer
+        return OfferSerializer
     
 class OfferDetailView(RetrieveAPIView):
     queryset = OfferDetail.objects.all()
