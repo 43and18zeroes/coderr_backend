@@ -1,5 +1,5 @@
 from rest_framework.pagination import PageNumberPagination
-from .serializers import OfferSerializer, OfferDetailSerializer, OfferCreateSerializer
+from .serializers import OfferSerializer, OfferDetailSerializer, OfferCreateSerializer, OfferSingleSerializer
 from django_filters.rest_framework import DjangoFilterBackend, FilterSet, CharFilter
 from offers_app.models import Offer, OfferDetail
 from rest_framework.filters import OrderingFilter, SearchFilter
@@ -20,7 +20,7 @@ class OfferFilter(FilterSet):
 
 class OfferSingleAPIView(RetrieveAPIView):
     queryset = Offer.objects.all()
-    serializer_class = OfferSerializer
+    serializer_class = OfferSingleSerializer
 
 class OfferListCreateAPIView(ListCreateAPIView):
     queryset = Offer.objects.all().order_by('-created_at')
