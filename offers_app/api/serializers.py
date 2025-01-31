@@ -2,28 +2,17 @@ from django.contrib.auth.models import User
 from offers_app.models import Offer, OfferDetail
 from rest_framework import serializers
 
-
-# class OfferDetailSerializer(serializers.ModelSerializer):
-#     url = serializers.SerializerMethodField()
-
-#     class Meta:
-#         model = OfferDetail
-#         fields = ['id', 'url']
-
-#     def get_url(self, obj):
-#         return f"/offerdetails/{obj.id}/"
-
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'first_name', 'last_name', 'username']
 
 class OfferDetailURLSerializer(serializers.ModelSerializer):
-    url = serializers.SerializerMethodField()  # 👈 Hier wird die URL generiert
+    url = serializers.SerializerMethodField()
 
     class Meta:
         model = OfferDetail
-        fields = ['id', 'url']  # 👈 Nur ID und URL werden zurückgegeben
+        fields = ['id', 'url']
 
     def get_url(self, obj):
         return f"/offerdetails/{obj.id}/"
@@ -44,7 +33,7 @@ class OfferSerializer(serializers.ModelSerializer):
         request = self.context.get('request', None)
         
         if request and request.user.is_authenticated:
-            validated_data['user'] = request.user  # User aus request setzen
+            validated_data['user'] = request.user
         else:
             raise serializers.ValidationError({"user": "User authentication required."})
 
@@ -89,7 +78,7 @@ class OfferCreateSerializer(serializers.ModelSerializer):
         request = self.context.get('request', None)
         
         if request and request.user.is_authenticated:
-            validated_data['user'] = request.user  # User aus request setzen
+            validated_data['user'] = request.user
         else:
             raise serializers.ValidationError({"user": "User authentication required."})
 
