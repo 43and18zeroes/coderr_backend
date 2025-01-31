@@ -30,10 +30,11 @@ class OfferSerializer(serializers.ModelSerializer):
     min_price = serializers.FloatField(read_only=True)
     min_delivery_time = serializers.IntegerField(read_only=True)
     user = serializers.PrimaryKeyRelatedField(read_only=True)
+    user_details = UserSerializer(source='user', read_only=True)
 
     class Meta:
         model = Offer
-        fields = ['id', 'user', 'title', 'description', 'created_at', 'updated_at', 'details', 'min_price', 'min_delivery_time']
+        fields = ['id', 'user', 'title', 'description', 'created_at', 'updated_at', 'details', 'min_price', 'min_delivery_time', 'user_details']
 
     def create(self, validated_data):
         details_data = validated_data.pop('details', [])
