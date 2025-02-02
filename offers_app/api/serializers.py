@@ -146,6 +146,7 @@ class OfferSingleSerializer(serializers.ModelSerializer):
         instance.save()
 
         for detail_data in details_data:
+            # for
             detail_id = detail_data.get('id', None)
             if detail_id:
                 detail = OfferDetail.objects.get(id=detail_id, offer=instance)
