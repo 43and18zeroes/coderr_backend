@@ -140,19 +140,19 @@ class OfferSingleSerializer(serializers.ModelSerializer):
     
     def update(self, instance, validated_data):
         details_data = validated_data.pop('details', [])
-        
         instance.title = validated_data.get('title', instance.title)
         instance.description = validated_data.get('description', instance.description)
         instance.save()
 
+        # Aktualisieren der OfferDetails
         for detail_data in details_data:
-            # for
-            detail_id = detail_data.get('id', None)
-            if detail_id:
-                detail = OfferDetail.objects.get(id=detail_id, offer=instance)
+            offer_type = detail_data.get('offer_type')
+            existing_detail = instance.details.filter(offer_type=offer_type).first()
+            
+            if existing_detail:
                 for attr, value in detail_data.items():
-                    setattr(detail, attr, value)
-                detail.save()
+                    setattr(existing_detail, attr, value)
+                existing_detail.save()
             else:
                 OfferDetail.objects.create(offer=instance, **detail_data)
 
