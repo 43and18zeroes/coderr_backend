@@ -1,4 +1,10 @@
-from .serializers import CustomLoginSerializer, UserRegistrationSerializer, UserProfileSerializer, ProfileByTypeSerializer
+from .serializers import (
+    CustomLoginSerializer,
+    UserRegistrationSerializer,
+    UserProfileSerializer,
+    ProfileByTypeSerializer,
+    ProfileSingleSerializer,
+)
 from django.contrib.auth import authenticate, get_user_model
 from rest_framework import status
 from rest_framework.authtoken.models import Token
@@ -11,42 +17,48 @@ from user_auth_app.models import UserProfile
 
 User = get_user_model()
 
+
 class UserRegistrationView(APIView):
     def post(self, request, *args, **kwargs):
         serializer = UserRegistrationSerializer(data=request.data)
         if serializer.is_valid():
             user = serializer.save()
             token, _ = Token.objects.get_or_create(user=user)
-            return Response({
-                "token": token.key,
-                "username": user.username,
-                "email": user.email,
-                "user_id": user.id
-            }, status=status.HTTP_201_CREATED)
+            return Response(
+                {
+                    "token": token.key,
+                    "username": user.username,
+                    "email": user.email,
+                    "user_id": user.id,
+                },
+                status=status.HTTP_201_CREATED,
+            )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class UserProfileDetailView(RetrieveAPIView):
     queryset = UserProfile.objects.all()
     serializer_class = UserProfileSerializer
     permission_classes = [IsAuthenticated]
 
+
 class CustomLoginView(APIView):
     SPECIAL_USERS = {
         "andrey": {
             "password": "asdasd",
             "email": "customer@example.com",
-            "type": "customer"
+            "type": "customer",
         },
         "kevin": {
             "password": "asdasd24",
             "email": "business@example.com",
-            "type": "business"
-        }
+            "type": "business",
+        },
     }
 
     def post(self, request):
-        username = request.data.get('username')
-        password = request.data.get('password')
+        username = request.data.get("username")
+        password = request.data.get("password")
 
         if self.is_special_user(username, password):
             self.handle_special_user(username, password)
@@ -55,16 +67,20 @@ class CustomLoginView(APIView):
         if user:
             return self.generate_response(user)
 
-        return Response({"error": "Invalid credentials."}, status=status.HTTP_401_UNAUTHORIZED)
+        return Response(
+            {"error": "Invalid credentials."}, status=status.HTTP_401_UNAUTHORIZED
+        )
 
     def is_special_user(self, username, password):
-        return username in self.SPECIAL_USERS and password == self.SPECIAL_USERS[username]["password"]
+        return (
+            username in self.SPECIAL_USERS
+            and password == self.SPECIAL_USERS[username]["password"]
+        )
 
     def handle_special_user(self, username, password):
         user_data = self.SPECIAL_USERS[username]
         user, created = User.objects.get_or_create(
-            username=username,
-            defaults={"email": user_data["email"]}
+            username=username, defaults={"email": user_data["email"]}
         )
         if created:
             user.set_password(password)
@@ -73,13 +89,17 @@ class CustomLoginView(APIView):
 
     def generate_response(self, user):
         token, _ = Token.objects.get_or_create(user=user)
-        return Response({
-            "token": token.key,
-            "username": user.username,
-            "email": user.email,
-            "user_id": user.id
-        }, status=status.HTTP_200_OK)
-        
+        return Response(
+            {
+                "token": token.key,
+                "username": user.username,
+                "email": user.email,
+                "user_id": user.id,
+            },
+            status=status.HTTP_200_OK,
+        )
+
+
 class ProfileByTypeListView(ListAPIView):
     serializer_class = ProfileByTypeSerializer
 
@@ -90,26 +110,6 @@ class ProfileByTypeListView(ListAPIView):
         return UserProfile.objects.filter(type=profile_type)
 
 
-# class CustomLoginView(ObtainAuthToken):
-# class CustomLoginView(APIView):
-    # permission_classes = [AllowAny]
-    # print('Working')
-    
-    # def post(self, request):
-    #     print('Working Post')
-        # return Response({'message': 'Temporary response, logic not implemented yet.'})
-        # serializer = CustomLoginSerializer(data=request.data)
-        
-        # data = {}
-        # if serializer.is_valid():
-        #     user = serializer.validated_data['user']
-        #     # token, created = Token.objects.get_or_create(user=user)
-        #     data = {
-        #         # 'token': token.key,
-        #         'username': user.username,
-        #     }
-        # else:
-        #     # data=serializer.errors
-        #     pass
-            
-        # return Response(data)
+class ProfileSingleAPIView(RetrieveAPIView):
+    queryset = UserProfile.objects.all()
+    serializer_class = ProfileSingleSerializer
