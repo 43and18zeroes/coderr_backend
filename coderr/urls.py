@@ -23,7 +23,6 @@ from user_auth_app.api.views import CustomLoginView, UserRegistrationView, UserP
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # path('api/', include('user_auth_app.api.urls')),
     path('api/login/', CustomLoginView.as_view(), name='login'),
     path('api/offers/', OfferListCreateAPIView.as_view(), name='offer-list-create'),
     path('api/offers/<int:pk>/', OfferSingleAPIView.as_view(), name='offer-single'),

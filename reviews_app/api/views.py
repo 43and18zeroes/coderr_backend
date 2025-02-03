@@ -8,10 +8,10 @@ from .serializers import ReviewSerializer
 
 class ReviewListCreateView(ListCreateAPIView):
     serializer_class = ReviewSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]  # Nur Authentifizierte können posten, GET ist offen
+    permission_classes = [IsAuthenticatedOrReadOnly]
     filter_backends = [DjangoFilterBackend, OrderingFilter]
-    filterset_fields = ['business_user']  # Ermöglicht ?business_user_id=1
-    ordering_fields = ['rating', 'created_at']  # Ermöglicht ?ordering=rating oder ?ordering=-created_at
+    filterset_fields = ['business_user']
+    ordering_fields = ['rating', 'created_at']
 
     def get_queryset(self):
         queryset = Review.objects.all()
