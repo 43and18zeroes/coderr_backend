@@ -144,7 +144,6 @@ class OfferSingleSerializer(serializers.ModelSerializer):
         instance.description = validated_data.get('description', instance.description)
         instance.save()
 
-        # Aktualisieren der OfferDetails
         for detail_data in details_data:
             offer_type = detail_data.get('offer_type')
             existing_detail = instance.details.filter(offer_type=offer_type).first()

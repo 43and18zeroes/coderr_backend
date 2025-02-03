@@ -1,5 +1,5 @@
-from rest_framework.generics import ListCreateAPIView
-from .serializers import OrderSerializer
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from .serializers import OrderSerializer, OrderSingleSerializer
 from orders_app.models import Order
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
@@ -9,6 +9,10 @@ from django.contrib.auth.models import User
 class OrderListCreateView(ListCreateAPIView):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
+    
+class OrderSingleAPIView(RetrieveUpdateDestroyAPIView):
+    queryset = Order.objects.all()
+    serializer_class = OrderSingleSerializer
     
 class OrderCountView(APIView):
     permission_classes = [IsAuthenticated]
