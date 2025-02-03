@@ -1,3 +1,4 @@
+from rest_framework.generics import RetrieveUpdateDestroyAPIView
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import OrderingFilter
 from rest_framework.generics import ListCreateAPIView
@@ -21,3 +22,7 @@ class ReviewListCreateView(ListCreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save(reviewer=self.request.user)
+
+class ReviewSingleView(RetrieveUpdateDestroyAPIView):
+    queryset = Review.objects.all()
+    serializer_class = ReviewSerializer
