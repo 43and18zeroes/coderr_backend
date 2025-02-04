@@ -10,14 +10,14 @@ from offers_app.models import Offer
 
 class BaseInfoView(APIView):
     def get(self, request, *args, **kwargs):
-        review_count = Review.objects.count()  # Zählt alle Reviews
-        average_rating = Review.objects.aggregate(models.Avg('rating'))['rating__avg'] or 0.0  # Durchschnittswert der Bewertungen
-        business_profile_count = UserProfile.objects.filter(type="business").count()  # Anzahl Business-Profile
-        offer_count = Offer.objects.count()  # Anzahl der Angebote
+        review_count = Review.objects.count()
+        average_rating = Review.objects.aggregate(models.Avg('rating'))['rating__avg'] or 0.0
+        business_profile_count = UserProfile.objects.filter(type="business").count()
+        offer_count = Offer.objects.count()
 
         data = {
             "review_count": review_count,
-            "average_rating": round(average_rating, 2),  # Rundet den Durchschnitt
+            "average_rating": round(average_rating, 2),
             "business_profile_count": business_profile_count,
             "offer_count": offer_count
         }
