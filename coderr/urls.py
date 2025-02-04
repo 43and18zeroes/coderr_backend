@@ -16,6 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from base_info_app.api.views import BaseInfoView
 from offers_app.api.views import OfferListCreateAPIView, OfferSingleAPIView, OfferDetailView
 from orders_app.api.views import OrderListCreateView, OrderSingleAPIView, OrderCountView, CompletedOrderCountView
 from reviews_app.api.views import ReviewListCreateView, ReviewSingleView
@@ -23,6 +24,7 @@ from user_auth_app.api.views import CustomLoginView, UserRegistrationView, UserP
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path("api/base-info/", BaseInfoView.as_view(), name="base-info"),
     path('api/login/', CustomLoginView.as_view(), name='login'),
     path('api/offers/', OfferListCreateAPIView.as_view(), name='offer-list-create'),
     path('api/offers/<int:pk>/', OfferSingleAPIView.as_view(), name='offer-single'),
