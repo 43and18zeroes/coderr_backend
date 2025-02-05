@@ -24,7 +24,7 @@ class OfferSingleAPIView(RetrieveUpdateDestroyAPIView):
     serializer_class = OfferSingleSerializer
 
 class OfferListCreateAPIView(ListCreateAPIView):
-    queryset = Offer.objects.all().order_by('-created_at')
+    queryset = Offer.objects.all().order_by('created_at')
     filter_backends = [DjangoFilterBackend, OrderingFilter, SearchFilter]
     filterset_class = OfferFilter
     ordering_fields = ['created_at', 'updated_at', 'title', 'min_price', 'min_delivery_time']  # min_price hinzugefügt
