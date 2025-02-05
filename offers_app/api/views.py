@@ -12,6 +12,7 @@ class OfferPagination(PageNumberPagination):
 
 class OfferFilter(FilterSet):
     creator_id = CharFilter(field_name="user__id")
+    max_delivery_time = CharFilter(field_name="min_delivery_time", lookup_expr='lte')
 
     class Meta:
         model = Offer
