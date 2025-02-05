@@ -31,6 +31,24 @@ class UserProfileSerializer(serializers.ModelSerializer):
             "email",
             "created_at",
         ]
+        
+    def update(self, instance, validated_data):
+        # Benutzer-Daten extrahieren, falls vorhanden
+        user_data = validated_data.pop("user", None)
+
+        # Falls Benutzerdaten enthalten sind, User-Instanz aktualisieren
+        if user_data:
+            user = instance.user
+            for attr, value in user_data.items():
+                setattr(user, attr, value)
+            user.save()
+
+        # Restliche Felder im UserProfile updaten
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+
+        instance.save()
+        return instance
 
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
