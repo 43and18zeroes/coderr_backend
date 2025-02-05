@@ -27,7 +27,7 @@ class OfferListCreateAPIView(ListCreateAPIView):
     queryset = Offer.objects.all().order_by('-created_at')
     filter_backends = [DjangoFilterBackend, OrderingFilter, SearchFilter]
     filterset_class = OfferFilter
-    ordering_fields = ['created_at', 'title']
+    ordering_fields = ['created_at', 'updated_at', 'title', 'min_price', 'min_delivery_time']  # min_price hinzugefügt
     search_fields = ['title', 'description']
     pagination_class = OfferPagination
     
