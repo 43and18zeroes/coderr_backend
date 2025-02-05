@@ -3,17 +3,17 @@ from .serializers import (
     UserRegistrationSerializer,
     UserProfileSerializer,
     ProfileByTypeSerializer,
-    ProfileSingleSerializer,
 )
 from django.contrib.auth import authenticate, get_user_model
 from rest_framework import status
 from rest_framework.authtoken.models import Token
 from rest_framework.exceptions import NotFound
-from rest_framework.generics import RetrieveAPIView, ListAPIView
+from rest_framework.generics import RetrieveAPIView, ListAPIView, RetrieveUpdateAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from user_auth_app.models import UserProfile
+
 
 User = get_user_model()
 
@@ -36,10 +36,16 @@ class UserRegistrationView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class UserProfileDetailView(RetrieveAPIView):
+class ProfileSingleAPIView(RetrieveUpdateAPIView):
     queryset = UserProfile.objects.all()
     serializer_class = UserProfileSerializer
     permission_classes = [IsAuthenticated]
+    
+    def get_queryset(self):
+        """Erlaubt es Nutzern, nur ihr eigenes Profil zu bearbeiten, außer Admins."""
+        if self.request.user.is_staff:  # Admins können alle Profile ändern
+            return UserProfile.objects.all()
+        return UserProfile.objects.filter(user=self.request.user)
 
 
 class CustomLoginView(APIView):
@@ -110,6 +116,6 @@ class ProfileByTypeListView(ListAPIView):
         return UserProfile.objects.filter(type=profile_type)
 
 
-class ProfileSingleAPIView(RetrieveAPIView):
-    queryset = UserProfile.objects.all()
-    serializer_class = ProfileSingleSerializer
+# class ProfileSingleAPIView(RetrieveAPIView):
+#     queryset = UserProfile.objects.all()
+#     serializer_class = ProfileSingleSerializer
