@@ -42,10 +42,8 @@ class ProfileSingleAPIView(RetrieveUpdateAPIView):
     permission_classes = [IsAuthenticated]
     
     def get_queryset(self):
-        """Erlaubt es Nutzern, nur ihr eigenes Profil zu bearbeiten, außer Admins."""
-        if self.request.user.is_staff:  # Admins können alle Profile ändern
-            return UserProfile.objects.all()
-        return UserProfile.objects.filter(user=self.request.user)
+        """Alle authentifizierten Nutzer dürfen auf alle Profile zugreifen."""
+        return UserProfile.objects.all()
 
 
 class CustomLoginView(APIView):
