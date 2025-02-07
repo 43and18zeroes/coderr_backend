@@ -1,28 +1,36 @@
-from rest_framework.generics import RetrieveUpdateDestroyAPIView
+from rest_framework.generics import RetrieveUpdateDestroyAPIView, ListCreateAPIView
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import OrderingFilter
-from rest_framework.generics import ListCreateAPIView
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from reviews_app.models import Review
 from .serializers import ReviewSerializer
+from user_auth_app.models import UserProfile
+from .permissions import IsReviewerOrAdmin
+from rest_framework.exceptions import PermissionDenied
 
 class ReviewListCreateView(ListCreateAPIView):
     serializer_class = ReviewSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
     filter_backends = [DjangoFilterBackend, OrderingFilter]
-    filterset_fields = ['business_user']
-    ordering_fields = ['rating', 'created_at']
+    filterset_fields = ["business_user", "reviewer"]
+    ordering_fields = ["rating", "created_at"]
 
     def get_queryset(self):
-        queryset = Review.objects.all()
-        business_user_id = self.request.query_params.get('business_user_id')
-        if business_user_id:
-            queryset = queryset.filter(business_user_id=business_user_id)
-        return queryset
+        return Review.objects.all()
 
     def perform_create(self, serializer):
+        user_profile = UserProfile.objects.get(user=self.request.user)
+        print(f"User {self.request.user.id} hat Typ: {user_profile.type}")  # Debug-Print
+        if user_profile.type != "customer":
+            raise PermissionDenied("Nur Kunden können Bewertungen erstellen.")
+
+        reviewer_id = self.request.data.get("reviewer")
+        if reviewer_id and reviewer_id != self.request.user.id:
+            raise PermissionDenied("Du kannst keine Bewertung im Namen eines anderen Nutzers abgeben.")
+
         serializer.save(reviewer=self.request.user)
 
 class ReviewSingleView(RetrieveUpdateDestroyAPIView):
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
+    # permission_classes = [IsAuthenticated, IsReviewerOrAdmin]
