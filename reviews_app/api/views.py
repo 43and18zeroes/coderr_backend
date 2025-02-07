@@ -20,7 +20,6 @@ class ReviewListCreateView(ListCreateAPIView):
 
     def perform_create(self, serializer):
         user_profile = UserProfile.objects.get(user=self.request.user)
-        print(f"User {self.request.user.id} hat Typ: {user_profile.type}")  # Debug-Print
         if user_profile.type != "customer":
             raise PermissionDenied("Nur Kunden können Bewertungen erstellen.")
 
@@ -33,4 +32,3 @@ class ReviewListCreateView(ListCreateAPIView):
 class ReviewSingleView(RetrieveUpdateDestroyAPIView):
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
-    # permission_classes = [IsAuthenticated, IsReviewerOrAdmin]

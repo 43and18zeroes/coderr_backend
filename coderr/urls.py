@@ -35,7 +35,6 @@ urlpatterns = [
     path('api/completed-order-count/<int:business_user_id>/', CompletedOrderCountView.as_view(), name='completed-order-count'),
     path('api/profile/<int:pk>/', ProfileSingleAPIView.as_view(), name='user-profile-detail'),
     path('api/registration/', UserRegistrationView.as_view(), name='user-registration'),
-    # path('api/profile/<int:pk>/', ProfileSingleAPIView.as_view(), name='profile-single'),
     path('api/profiles/<str:type>/', ProfileByTypeListView.as_view(), name='profiles'),
     path('api/reviews/', ReviewListCreateView.as_view(), name='review-list'),
     path("api/reviews/<int:pk>/", ReviewSingleView.as_view(), name="review-single"),
