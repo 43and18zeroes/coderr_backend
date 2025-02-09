@@ -9,14 +9,13 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.contrib.auth.models import User
 
-# class OrderListCreateView(ListCreateAPIView):
-#     queryset = Order.objects.all()
-#     serializer_class = OrderSerializer
-
 class OrderListCreateView(ListCreateAPIView):
-    queryset = Order.objects.all()
     serializer_class = OrderSerializer
     permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        """Nur Bestellungen des aktuellen Benutzers anzeigen."""
+        return Order.objects.filter(customer_user=self.request.user)
 
     def create(self, request, *args, **kwargs):
         # Sicherstellen, dass der Benutzer ein CustomerProfile hat
