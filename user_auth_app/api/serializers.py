@@ -13,6 +13,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
     )
     first_name = serializers.CharField(source="user.first_name", default=None)
     last_name = serializers.CharField(source="user.last_name", default=None)
+    file = serializers.ImageField(required=False)
     created_at = serializers.DateTimeField(source="user.date_joined")
 
     class Meta:

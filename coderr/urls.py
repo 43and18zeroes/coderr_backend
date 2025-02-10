@@ -15,7 +15,9 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path
+from django.conf import settings
+from django.conf.urls.static import static
 from base_info_app.api.views import BaseInfoView
 from offers_app.api.views import OfferListCreateAPIView, OfferSingleAPIView, OfferDetailView
 from orders_app.api.views import OrderListCreateView, OrderSingleAPIView, OrderCountView, CompletedOrderCountView
@@ -39,3 +41,5 @@ urlpatterns = [
     path('api/reviews/', ReviewListCreateView.as_view(), name='review-list'),
     path("api/reviews/<int:pk>/", ReviewSingleView.as_view(), name="review-single"),
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
