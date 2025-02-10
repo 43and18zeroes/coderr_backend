@@ -15,7 +15,8 @@ class UserProfileSerializer(serializers.ModelSerializer):
     first_name = serializers.CharField(source="user.first_name", default=None)
     last_name = serializers.CharField(source="user.last_name", default=None)
     # file = serializers.ImageField(required=False)
-    file = serializers.SerializerMethodField()
+    # file = serializers.SerializerMethodField()
+    file = serializers.ImageField(required=False, allow_null=True)
     created_at = serializers.DateTimeField(source="user.date_joined")
 
     class Meta:
@@ -34,6 +35,13 @@ class UserProfileSerializer(serializers.ModelSerializer):
             "email",
             "created_at",
         ]
+        
+    def to_representation(self, instance):
+        """Diese Methode fügt die vollständige URL für das Bild hinzu."""
+        representation = super().to_representation(instance)
+        if instance.file:
+            representation["file"] = settings.MEDIA_URL + str(instance.file)
+        return representation
         
     def get_file(self, obj):
         if obj.file:
