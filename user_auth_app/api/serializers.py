@@ -2,6 +2,7 @@ from django.contrib.auth.models import User
 from rest_framework import serializers
 from rest_framework.authtoken.models import Token
 from user_auth_app.models import UserProfile
+from django.conf import settings
 
 
 class UserProfileSerializer(serializers.ModelSerializer):
@@ -13,7 +14,8 @@ class UserProfileSerializer(serializers.ModelSerializer):
     )
     first_name = serializers.CharField(source="user.first_name", default=None)
     last_name = serializers.CharField(source="user.last_name", default=None)
-    file = serializers.ImageField(required=False)
+    # file = serializers.ImageField(required=False)
+    file = serializers.SerializerMethodField()
     created_at = serializers.DateTimeField(source="user.date_joined")
 
     class Meta:
@@ -32,6 +34,10 @@ class UserProfileSerializer(serializers.ModelSerializer):
             "email",
             "created_at",
         ]
+        
+    def get_file(self, obj):
+        if obj.file:
+            return settings.MEDIA_URL + str(obj.file)
         
     def update(self, instance, validated_data):
         # Benutzer-Daten extrahieren, falls vorhanden
