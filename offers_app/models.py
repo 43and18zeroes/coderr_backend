@@ -45,7 +45,7 @@ class OfferDetail(models.Model):
     revisions = models.PositiveIntegerField(default=-1)
     delivery_time_in_days = models.PositiveIntegerField(default=7)
     price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    features = models.JSONField(default='default-feature')
+    features = models.JSONField(default=dict)
     offer_type = models.CharField(max_length=50, choices=[
         ('basic', 'Basic'),
         ('standard', 'Standard'),
