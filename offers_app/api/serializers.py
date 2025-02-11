@@ -19,6 +19,7 @@ class OfferDetailURLSerializer(serializers.ModelSerializer):
 
 class OfferSerializer(serializers.ModelSerializer):
     details = OfferDetailURLSerializer(many=True)
+    image = serializers.ImageField(required=False, allow_null=True)
     min_price = serializers.FloatField(read_only=True)
     min_delivery_time = serializers.IntegerField(read_only=True)
     user = serializers.PrimaryKeyRelatedField(read_only=True)
@@ -26,7 +27,7 @@ class OfferSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Offer
-        fields = ['id', 'user', 'title', 'description', 'created_at', 'updated_at', 'details', 'min_price', 'min_delivery_time', 'user_details']
+        fields = ['id', 'user', 'title', 'description', 'created_at', 'updated_at', 'details', 'image', 'min_price', 'min_delivery_time', 'user_details']
 
     def create(self, validated_data):
         details_data = validated_data.pop('details', [])
@@ -64,6 +65,7 @@ class OfferDetailSerializer(serializers.ModelSerializer):
     
 class OfferCreateSerializer(serializers.ModelSerializer):
     details = OfferDetailSerializer(many=True)
+    image = serializers.ImageField(required=False, allow_null=True)
     min_price = serializers.FloatField(read_only=True)
     min_delivery_time = serializers.IntegerField(read_only=True)
     user = serializers.PrimaryKeyRelatedField(read_only=True)
@@ -71,7 +73,7 @@ class OfferCreateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Offer
-        fields = ['id', 'user', 'title', 'description', 'created_at', 'updated_at', 'details', 'min_price', 'min_delivery_time', 'user_details']
+        fields = ['id', 'user', 'title', 'description', 'created_at', 'updated_at', 'details', 'image', 'min_price', 'min_delivery_time', 'user_details']
 
     def create(self, validated_data):
         details_data = validated_data.pop('details', [])
@@ -102,6 +104,7 @@ class OfferCreateSerializer(serializers.ModelSerializer):
     
 class OfferSingleSerializer(serializers.ModelSerializer):
     details = OfferDetailSerializer(many=True)
+    image = serializers.ImageField(required=False, allow_null=True)
     min_price = serializers.FloatField(read_only=True)
     min_delivery_time = serializers.IntegerField(read_only=True)
     user = serializers.PrimaryKeyRelatedField(read_only=True)
@@ -109,7 +112,7 @@ class OfferSingleSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Offer
-        fields = ['id', 'user', 'title', 'description', 'created_at', 'updated_at', 'details', 'min_price', 'min_delivery_time', 'user_details']
+        fields = ['id', 'user', 'title', 'description', 'created_at', 'updated_at', 'details', 'image', 'min_price', 'min_delivery_time', 'user_details']
 
     def create(self, validated_data):
         details_data = validated_data.pop('details', [])
@@ -142,6 +145,7 @@ class OfferSingleSerializer(serializers.ModelSerializer):
         details_data = validated_data.pop('details', [])
         instance.title = validated_data.get('title', instance.title)
         instance.description = validated_data.get('description', instance.description)
+        instance.image = validated_data.get('image', instance.image)
         instance.save()
 
         for detail_data in details_data:

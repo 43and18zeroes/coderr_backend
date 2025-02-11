@@ -7,6 +7,7 @@ class Offer(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='offers', null=True, blank=True)
     title = models.CharField(max_length=255, default='default-title')
     description = models.TextField(null=True)
+    image = models.ImageField(upload_to='offer_images/', null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     min_price = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
