@@ -14,7 +14,7 @@ class Review(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        unique_together = ('reviewer', 'business_user')  # Stellt sicher, dass jeder Nutzer nur eine Bewertung pro Business abgeben kann.
+        unique_together = ('reviewer', 'business_user')
 
     def __str__(self):
         return f"Review {self.id} - Rating: {self.rating}"

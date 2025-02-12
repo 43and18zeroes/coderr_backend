@@ -18,19 +18,15 @@ class OrderListCreateView(ListCreateAPIView):
         return Order.objects.filter(customer_user=self.request.user)
 
     def create(self, request, *args, **kwargs):
-        # Sicherstellen, dass der Benutzer ein CustomerProfile hat
         if not hasattr(request.user, 'userprofile') or request.user.userprofile.type != 'customer':
             return Response({"error": "Nur Kunden können Bestellungen erstellen."}, status=status.HTTP_403_FORBIDDEN)
 
-        # offer_detail_id aus der Anfrage extrahieren
         offer_detail_id = request.data.get("offer_detail_id")
         if not offer_detail_id:
             return Response({"error": "offer_detail_id ist erforderlich."}, status=status.HTTP_400_BAD_REQUEST)
 
-        # OfferDetail abrufen oder Fehler zurückgeben
         offer_detail = get_object_or_404(OfferDetail, id=offer_detail_id)
 
-        # Bestelldaten aus OfferDetail übernehmen
         order_data = {
             "customer_user": request.user.id,
             "business_user": offer_detail.offer.user.id,
@@ -43,7 +39,6 @@ class OrderListCreateView(ListCreateAPIView):
             "status": "in_progress",
         }
 
-        # Bestellung erstellen
         serializer = self.get_serializer(data=order_data)
         if serializer.is_valid():
             order = serializer.save()
@@ -69,11 +64,10 @@ class CompletedOrderCountView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, business_user_id, *args, **kwargs):
-        # Überprüfen, ob der Business-User existiert
+        
         if not User.objects.filter(id=business_user_id).exists():
             return Response({"error": "Business user not found."}, status=404)
 
-        # Bestellungen mit Status "completed" zählen
         completed_order_count = Order.objects.filter(
             business_user_id=business_user_id,
             status='completed'

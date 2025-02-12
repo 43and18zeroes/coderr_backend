@@ -8,7 +8,7 @@ from django.contrib.auth import authenticate, get_user_model
 from rest_framework import status
 from rest_framework.authtoken.models import Token
 from rest_framework.exceptions import NotFound
-from rest_framework.generics import RetrieveAPIView, ListAPIView, RetrieveUpdateAPIView
+from rest_framework.generics import ListAPIView, RetrieveUpdateAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
