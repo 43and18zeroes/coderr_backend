@@ -1,9 +1,9 @@
 from rest_framework.permissions import BasePermission
 from user_auth_app.models import UserProfile
 
-class IsCustomerUser(BasePermission):
+class IsBusinessUser(BasePermission):
     """
-    Permission that allows only users with type 'customer' to create an Offer.
+    Permission that allows only users with type 'business' to create an Offer.
     """
     
     def has_permission(self, request, view):
@@ -15,8 +15,8 @@ class IsCustomerUser(BasePermission):
         if not request.user or not request.user.is_authenticated:
             return False
         
-        # Check if the user has a UserProfile and is a 'customer'
+        # Check if the user has a UserProfile and is a 'business'
         try:
-            return request.user.userprofile.type == "customer"
+            return request.user.userprofile.type == "business"
         except UserProfile.DoesNotExist:
             return False
