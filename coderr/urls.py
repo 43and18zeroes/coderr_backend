@@ -26,8 +26,6 @@ from user_auth_app.api.views import CustomLoginView, UserRegistrationView, Profi
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("api/base-info/", BaseInfoView.as_view(), name="base-info"),
-    path('api/login/', CustomLoginView.as_view(), name='login'),
     path('api/offers/', OfferListCreateAPIView.as_view(), name='offer-list-create'),
     path('api/offers/<int:pk>/', OfferSingleAPIView.as_view(), name='offer-single'),
     path('api/offerdetails/<int:pk>/', OfferDetailView.as_view(), name='offer-detail'),
@@ -35,9 +33,11 @@ urlpatterns = [
     path('api/orders/<int:pk>/', OrderSingleAPIView.as_view(), name='order-single'),
     path('api/order-count/<int:business_user_id>/', OrderCountView.as_view(), name='order-count'),
     path('api/completed-order-count/<int:business_user_id>/', CompletedOrderCountView.as_view(), name='completed-order-count'),
+    path("api/base-info/", BaseInfoView.as_view(), name="base-info"),
     path('api/profile/<int:pk>/', ProfileSingleAPIView.as_view(), name='user-profile-detail'),
-    path('api/registration/', UserRegistrationView.as_view(), name='user-registration'),
     path('api/profiles/<str:type>/', ProfileByTypeListView.as_view(), name='profiles'),
+    path('api/login/', CustomLoginView.as_view(), name='login'),
+    path('api/registration/', UserRegistrationView.as_view(), name='user-registration'),
     path('api/reviews/', ReviewListCreateView.as_view(), name='review-list'),
     path("api/reviews/<int:pk>/", ReviewSingleView.as_view(), name="review-single"),
 ]
