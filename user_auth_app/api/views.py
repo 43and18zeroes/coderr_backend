@@ -63,6 +63,12 @@ class CustomLoginView(APIView):
     def post(self, request):
         username = request.data.get("username")
         password = request.data.get("password")
+        
+        if not username or not password:
+            return Response(
+                {"error": "Falsche Anmeldeinformationen oder ungültige Eingabe."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
         if self.is_special_user(username, password):
             self.handle_special_user(username, password)
