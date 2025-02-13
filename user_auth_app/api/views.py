@@ -112,8 +112,3 @@ class ProfileByTypeListView(ListAPIView):
         if profile_type not in ["business", "customer"]:
             raise NotFound("Invalid profile type.")
         return UserProfile.objects.filter(type=profile_type)
-
-
-# class ProfileSingleAPIView(RetrieveAPIView):
-#     queryset = UserProfile.objects.all()
-#     serializer_class = ProfileSingleSerializer
