@@ -23,6 +23,7 @@ class OfferFilter(FilterSet):
 class OfferSingleAPIView(RetrieveUpdateDestroyAPIView):
     queryset = Offer.objects.all()
     serializer_class = OfferSingleSerializer
+    permission_classes = [IsAuthenticated, IsBusinessUser]
 
 class OfferListCreateAPIView(ListCreateAPIView):
     queryset = Offer.objects.all().order_by('created_at')
