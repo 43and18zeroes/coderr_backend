@@ -66,7 +66,7 @@ class CustomLoginView(APIView):
         
         if not username or not password:
             return Response(
-                {"error": "Falsche Anmeldeinformationen oder ungültige Eingabe."},
+                {"error": "Invalid credentials."},
                 status=status.HTTP_400_BAD_REQUEST
             )
 
@@ -78,7 +78,7 @@ class CustomLoginView(APIView):
             return self.generate_response(user)
 
         return Response(
-            {"error": "Invalid credentials."}, status=status.HTTP_401_UNAUTHORIZED
+            {"error": "Invalid credentials."}, status=status.HTTP_400_BAD_REQUEST
         )
 
     def is_special_user(self, username, password):
