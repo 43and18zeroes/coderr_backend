@@ -20,11 +20,11 @@ class OrderListCreateView(ListCreateAPIView):
 
     def create(self, request, *args, **kwargs):
         if not hasattr(request.user, 'userprofile') or request.user.userprofile.type != 'customer':
-            return Response({"error": "Nur Kunden können Bestellungen erstellen."}, status=status.HTTP_403_FORBIDDEN)
+            return Response({"detail": "Nur Kunden können Bestellungen erstellen."}, status=status.HTTP_403_FORBIDDEN)
 
         offer_detail_id = request.data.get("offer_detail_id")
         if not offer_detail_id:
-            return Response({"error": "offer_detail_id ist erforderlich."}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"non_field_errors": ["offer_detail_id ist erforderlich."]}, status=status.HTTP_400_BAD_REQUEST)
 
         offer_detail = get_object_or_404(OfferDetail, id=offer_detail_id)
 
