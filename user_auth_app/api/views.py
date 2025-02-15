@@ -13,6 +13,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from user_auth_app.models import UserProfile
+from .permissions import IsOwnerOrReadOnly
 
 
 User = get_user_model()
@@ -39,7 +40,7 @@ class UserRegistrationView(APIView):
 class ProfileSingleAPIView(RetrieveUpdateAPIView):
     queryset = UserProfile.objects.all()
     serializer_class = UserProfileSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
     
     def get_queryset(self):
         """Alle authentifizierten Nutzer dürfen auf alle Profile zugreifen."""
