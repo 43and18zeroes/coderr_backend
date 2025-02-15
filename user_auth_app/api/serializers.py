@@ -91,10 +91,11 @@ class CustomLoginSerializer(serializers.Serializer):
 
 class ProfileByTypeSerializer(serializers.ModelSerializer):
     user = serializers.SerializerMethodField()
+    uploaded_at = serializers.DateTimeField()
 
     class Meta:
         model = UserProfile
-        fields = ['user', 'file', 'location', 'tel', 'description', 'working_hours', 'type']
+        fields = ["user", "file", "uploaded_at", "location", "tel", "description", "working_hours", "type"]
 
     def get_user(self, obj):
         return {

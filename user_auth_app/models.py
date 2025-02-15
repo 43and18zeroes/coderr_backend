@@ -8,8 +8,8 @@ class UserProfile(models.Model):
     ]
     
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    
     file = models.ImageField(upload_to="profile_pics/", blank=True, null=True)
+    uploaded_at = models.DateTimeField(auto_now_add=True)
     location = models.CharField(max_length=30, blank=True)
     tel = models.CharField(max_length=30, blank=True)
     description = models.TextField(max_length=255, blank=True)

@@ -118,4 +118,4 @@ class ProfileByTypeListView(ListAPIView):
         profile_type = self.kwargs.get("type")
         if profile_type not in ["business", "customer"]:
             raise NotFound("Invalid profile type.")
-        return UserProfile.objects.filter(type=profile_type)
+        return UserProfile.objects.filter(type=profile_type).order_by("-uploaded_at")
