@@ -31,8 +31,13 @@ This project a web application that replicates a freelancing platform. It serves
 2.  **Set up the backend:**
     *   Create a virtual environment (optional):
         ```bash
-        python3 -m venv venv
-        source venv/bin/activate  # On Windows: venv\Scripts\activate
+        py -m venv env
+        env/Scripts/activate
+        ```
+    *   Install Django:
+        ```bash
+        py -m pip install Django
+        pip install djangorestframework
         ```
     *   Install dependencies:
         ```bash
@@ -40,17 +45,17 @@ This project a web application that replicates a freelancing platform. It serves
         ```
     *   Migrate the database:
         ```bash
-        python manage.py migrate
+        py manage.py migrate
         ```
     *   Start the backend server:
         ```bash
-        python manage.py runserver
+        py manage.py runserver
         ```
 
 3.  **Clone the frontend repository:**
     ```bash
-    git clone [https://github.com/YOUR_USERNAME/YOUR_FRONTEND_REPO.git](https://www.google.com/search?q=https://github.com/YOUR_USERNAME/YOUR_FRONTEND_REPO.git)
-    cd YOUR_FRONTEND_REPO  # Or whatever the frontend directory is named
+    git clone https://github.com/43and18zeroes/coderr_frontend.git
+    cd coderr_frontend
     ```
 
 4.  **Set up the frontend:**
@@ -58,53 +63,12 @@ This project a web application that replicates a freelancing platform. It serves
         ```bash
         npm install  # Or yarn install
         ```
-    *   Start the frontend app:
+    *   Start the frontend app (using a local live server):
         ```bash
         npm start  # Or yarn start
         ```
 
-## Configuration
-
-*   **Environment Variables:** Describe the environment variables needed for the backend and frontend (e.g., database credentials, API keys). Provide examples of `.env` files (without sensitive data!).
-*   **Settings:** Explain any important settings that can be adjusted in configuration files.
-
-## Usage
-
-*   **API Endpoints:** List the most important API endpoints (with brief descriptions).
-*   **Frontend Features:** Describe the main features of the frontend.
-
-## Examples
-
-*   **Code Snippets:** Add relevant code snippets to illustrate the implementation of key features.
-
-## Testing
-
-*   **Unit Tests:** If available, describe how to run the unit tests.
-*   **Integration Tests:** If available, describe how to run integration tests.
-
-## Deployment
-
-*   **Deployment Notes:** Provide guidance on deploying the project to a server (e.g., using Docker, Gunicorn, Nginx).
-
-## Demo
-
-*   **Demo Link:** If a demo version of the project is available, include the link here.
-
-## Contributing
-
-*   **Contributions:** Encourage other developers to contribute to the project.
-*   **Roadmap:** If available, share the roadmap for future development.
-
-## License
-
-*   **License:** Specify the license under which the project is released (e.g., MIT, GPL).
-
 ## Contact
 
-*   **Author:** Your Name
-*   **Email:** Your Email Address
-
-## Acknowledgements
-
-*   **Libraries/Frameworks:** Thank the developers of the used libraries and frameworks.
-*   **Other:** Thank other individuals who contributed to the project.
+*   **Author:** Christoph Wagner
+*   **Email:** christoph@cw-coding.de
