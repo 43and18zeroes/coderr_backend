@@ -3,9 +3,9 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticate
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import OrderingFilter
 from reviews_app.models import Review
+from .permissions import IsCustomerAndReviewerOrReadOnly
 from .serializers import ReviewSerializer
 from user_auth_app.models import UserProfile
-from .permissions import IsReviewerOrAdmin
 from rest_framework.exceptions import PermissionDenied
 
 class ReviewListCreateView(ListCreateAPIView):
@@ -32,3 +32,4 @@ class ReviewListCreateView(ListCreateAPIView):
 class ReviewSingleView(RetrieveUpdateDestroyAPIView):
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly, IsCustomerAndReviewerOrReadOnly]
