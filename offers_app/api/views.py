@@ -6,6 +6,7 @@ from rest_framework.filters import OrderingFilter, SearchFilter
 from rest_framework.generics import ListCreateAPIView, RetrieveAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.permissions import IsAuthenticated
 from .permissions import IsBusinessUser
+from rest_framework.permissions import AllowAny
 
 class OfferPagination(PageNumberPagination):
     page_size = 10
@@ -32,8 +33,12 @@ class OfferListCreateAPIView(ListCreateAPIView):
     ordering_fields = ['created_at', 'updated_at', 'title', 'min_price', 'min_delivery_time']
     search_fields = ['title', 'description']
     pagination_class = OfferPagination
-    permission_classes = [IsAuthenticated, IsBusinessUser]
-    
+
+    def get_permissions(self):
+        if self.request.method in ['GET', 'HEAD', 'OPTIONS']:
+            return [AllowAny()]
+        return [IsAuthenticated(), IsBusinessUser()]
+
     def get_serializer_class(self):
         if self.request.method == 'POST':
             return OfferCreateSerializer
