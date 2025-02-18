@@ -18,8 +18,6 @@ This project a web application that replicates a freelancing platform. It serves
 *   Node.js and npm (or Yarn) (Specify versions)
 *   Virtualenv (optional, but highly recommended)
 
-## Installation
-
 ### Steps
 
 1.  **Clone the backend repository:**
