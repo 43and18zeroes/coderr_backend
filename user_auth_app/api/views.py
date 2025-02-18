@@ -40,8 +40,8 @@ class UserRegistrationView(APIView):
 class ProfileSingleAPIView(RetrieveUpdateAPIView):
     queryset = UserProfile.objects.all()
     serializer_class = UserProfileSerializer
-    permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
-    
+    permission_classes = [IsOwnerOrReadOnly]
+
     def get_queryset(self):
         """Alle authentifizierten Nutzer dürfen auf alle Profile zugreifen."""
         return UserProfile.objects.all()
