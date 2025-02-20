@@ -32,11 +32,15 @@ This project a web application that replicates a freelancing platform. It serves
     *   Create a virtual environment (optional):
         ```bash
         py -m venv env
+        ```
+        ```bash
         env/Scripts/activate
         ```
     *   Install Django:
         ```bash
         py -m pip install Django
+        ```
+        ```bash
         pip install djangorestframework
         ```
     *   Install dependencies:
@@ -55,6 +59,8 @@ This project a web application that replicates a freelancing platform. It serves
 3.  **Clone the frontend repository:**
     ```bash
     git clone https://github.com/43and18zeroes/coderr_frontend.git
+    ```
+    ```bash
     cd coderr_frontend
     ```
 
