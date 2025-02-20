@@ -23,6 +23,8 @@ This project a web application that replicates a freelancing platform. It serves
 1.  **Clone the backend repository:**
     ```bash
     git clone https://github.com/43and18zeroes/coderr_backend.git
+    ```
+    ```bash
     cd coderr_backend
     ```
 
