@@ -32,12 +32,23 @@ class OfferSingleAPIView(RetrieveUpdateDestroyAPIView):
         return [IsAuthenticated(), IsBusinessUser()]
 
 class OfferListCreateAPIView(ListCreateAPIView):
-    queryset = Offer.objects.all().order_by('created_at')
+    queryset = Offer.objects.all()
     filter_backends = [DjangoFilterBackend, OrderingFilter, SearchFilter]
     filterset_class = OfferFilter
     ordering_fields = ['created_at', 'updated_at', 'title', 'min_price', 'min_delivery_time']
     search_fields = ['title', 'description']
     pagination_class = OfferPagination
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+
+        if self.request.GET.get('ordering'):
+            return queryset
+
+        if self.request.GET.get('min_price') is not None:
+            return queryset.order_by('min_price')
+
+        return queryset.order_by('-created_at')
 
     def get_permissions(self):
         if self.request.method in ['GET', 'HEAD', 'OPTIONS']:
