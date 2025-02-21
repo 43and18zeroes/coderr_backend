@@ -14,6 +14,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from user_auth_app.models import UserProfile
 from .permissions import IsOwnerOrReadOnly
+from rest_framework.exceptions import NotFound
 
 
 User = get_user_model()
@@ -113,9 +114,13 @@ class CustomLoginView(APIView):
 
 class ProfileByTypeListView(ListAPIView):
     serializer_class = ProfileByTypeSerializer
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
+        user = self.request.user
         profile_type = self.kwargs.get("type")
+
         if profile_type not in ["business", "customer"]:
             raise NotFound("Invalid profile type.")
-        return UserProfile.objects.filter(type=profile_type).order_by("-uploaded_at")
+
+        return UserProfile.objects.filter(user=user, type=profile_type)
