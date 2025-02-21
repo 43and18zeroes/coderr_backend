@@ -7,6 +7,9 @@ from rest_framework.generics import ListCreateAPIView, RetrieveAPIView, Retrieve
 from rest_framework.permissions import IsAuthenticated
 from .permissions import IsBusinessUser
 from rest_framework.permissions import AllowAny
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework.views import exception_handler
 
 class OfferPagination(PageNumberPagination):
     page_size = 10
@@ -59,6 +62,14 @@ class OfferListCreateAPIView(ListCreateAPIView):
         if self.request.method == 'POST':
             return OfferCreateSerializer
         return OfferSerializer
+    
+    def handle_exception(self, exc):
+        response = exception_handler(exc, self.request)
+        
+        if response is None:
+            return Response({'error': 'Invalid request data'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        return response
     
 class OfferDetailView(RetrieveAPIView):
     queryset = OfferDetail.objects.all()
