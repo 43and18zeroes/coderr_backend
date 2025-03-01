@@ -31,14 +31,14 @@ This project a web application that replicates a freelancing platform. It serves
 2.  **Set up the backend:**
     *   Create a virtual environment (optional):
         ```bash
-        py -m venv env
+        python -m venv env
         ```
         ```bash
         env/Scripts/activate
         ```
     *   Install Django:
         ```bash
-        py -m pip install Django
+        python -m pip install Django
         ```
         ```bash
         pip install djangorestframework
@@ -49,11 +49,11 @@ This project a web application that replicates a freelancing platform. It serves
         ```
     *   Migrate the database:
         ```bash
-        py manage.py migrate
+        python manage.py migrate
         ```
     *   Start the backend server:
         ```bash
-        py manage.py runserver
+        python manage.py runserver
         ```
 
 3.  **Clone the frontend repository:**
