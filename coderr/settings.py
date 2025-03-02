@@ -30,6 +30,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     "34.40.21.42",
+    "coderr.cw-coding.de",
     "localhost",
     "127.0.0.1",
 ]
