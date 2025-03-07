@@ -29,7 +29,7 @@ SECRET_KEY = "django-insecure-jt+ows&rh$wq=57x(7v(zx0d^1$$muntmb*!o66(p(pr3q!bgb
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    "34.40.8.63",
+    "34.40.31.195",
     "coderr-backend.cw-coding.de",
     "localhost",
     "127.0.0.1",
